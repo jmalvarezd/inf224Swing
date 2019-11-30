@@ -1,6 +1,12 @@
-public class Main {
+public class RemoteControl {
+	
+	//Serveur par defaut
 	static final String DEFAULT_HOST = "localhost";
-	static final int DEFAULT_PORT = 3331;
+	static final int DEFAULT_PORT = 3332;
+	
+	//La fonction main:
+	//Initialiser une instance de 'Client' et l'utiliser
+	//pour construire une instance de MyFrame
 	public static void main(String[] args) {
 		Client client = null;
 		try {

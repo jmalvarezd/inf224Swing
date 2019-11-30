@@ -16,12 +16,14 @@ import javax.swing.JToolBar;
 
 public class MyFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private Client client;
-	private AbstractAction actionFind, actionPlay, actionClose;
+	private AbstractAction actionFind, actionPlay, actionClose, actionList;
+	
+	//Le constructeur genere toute l'interface graphique
+	//et utilise le Client pour se communiquer avec le serveur
 	public MyFrame(Client client) {
-		this.client = client;
+		
 		JTextArea textArea = new JTextArea();
-
+		textArea.setLineWrap(true);
         JScrollPane jp = new JScrollPane(textArea);
 		this.add(jp);
 		
@@ -37,7 +39,7 @@ public class MyFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String targetMedia = targetField.getText();
 				String response = client.send("find " + targetMedia);
-				textArea.append(response);
+				textArea.append(response + "\n");
 			}
 		};
 		actionPlay = new AbstractAction("Play") {
@@ -45,7 +47,9 @@ public class MyFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textArea.append(this.getValue(NAME).toString()+"! \n");
+				String targetMedia = targetField.getText();
+				String response = client.send("play " + targetMedia);
+				textArea.append(response + "\n");
 			}
 		};
 		actionClose = new AbstractAction("Close") {
@@ -54,6 +58,16 @@ public class MyFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
+			}
+		};
+
+		actionList = new AbstractAction("List") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String response = client.send("list" );
+				textArea.append(response + "\n");			
 			}
 		};
 		
@@ -73,12 +87,14 @@ public class MyFrame extends JFrame {
 		JMenu menu = new JMenu("Menu");
 		menu.add(actionFind);
 		menu.add(actionPlay);
+		menu.add(actionList);
 		menuBar.add(menu);
 		this.setJMenuBar(menuBar);
 		
 		JToolBar toolBar = new JToolBar("Toolbar");
 		toolBar.add(actionFind);
 		toolBar.add(actionPlay);
+		toolBar.add(actionList);
 		this.add(toolBar, BorderLayout.NORTH);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
