@@ -16,7 +16,7 @@ import javax.swing.JToolBar;
 
 public class MyFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private AbstractAction actionFind, actionPlay, actionClose, actionList;
+	private AbstractAction actionFind, actionPlay, actionClose, actionList, actionHelp;
 	
 	//Le constructeur genere toute l'interface graphique
 	//et utilise le Client pour se communiquer avec le serveur
@@ -70,7 +70,16 @@ public class MyFrame extends JFrame {
 				textArea.append(response + "\n");			
 			}
 		};
-		
+
+		actionHelp = new AbstractAction("Help") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String response = client.send("help" );
+				textArea.append(response + "\n");			
+			}
+		};
 		JButton b1 = new JButton(actionFind);
 		southFrame.add(b1);
 		
@@ -88,6 +97,7 @@ public class MyFrame extends JFrame {
 		menu.add(actionFind);
 		menu.add(actionPlay);
 		menu.add(actionList);
+		menu.add(actionHelp);
 		menuBar.add(menu);
 		this.setJMenuBar(menuBar);
 		
@@ -95,6 +105,7 @@ public class MyFrame extends JFrame {
 		toolBar.add(actionFind);
 		toolBar.add(actionPlay);
 		toolBar.add(actionList);
+		toolBar.add(actionHelp);
 		this.add(toolBar, BorderLayout.NORTH);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
